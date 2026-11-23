@@ -1,0 +1,166 @@
+/* :root {
+  --radius: 0.75rem;
+  --background: oklch(0.982 0.006 85);
+  --foreground: oklch(0.26 0.06 340);
+  --card: oklch(1 0 0);
+  --muted-foreground: oklch(0.52 0.03 340);
+  --primary: oklch(0.33 0.083 340);
+  --secondary: oklch(0.955 0.012 340);
+  --secondary-foreground: oklch(0.33 0.083 340);
+  --gold: oklch(0.78 0.079 92);
+  --gold-foreground: oklch(0.28 0.06 340);
+  --magenta: oklch(0.55 0.22 348);
+  --positive: oklch(0.58 0.13 155);
+  --warning: oklch(0.75 0.14 75);
+  --destructive: oklch(0.55 0.2 25);
+  --border: oklch(0.9 0.015 340);
+  --sidebar: oklch(0.29 0.075 340);
+  --sidebar-foreground: oklch(0.94 0.015 85);
+  --sidebar-primary: oklch(0.78 0.079 92);
+  --sidebar-accent: oklch(0.36 0.085 340);
+  --font-display: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --panel-shadow: 0 1px 2px oklch(0.33 0.083 340 / 6%), 0 12px 32px -24px oklch(0.33 0.083 340 / 40%);
+  --shell-gap: 0rem;
+} */
+
+/* ── CLINICAL THEME ──
+   Calm, clean and clinical: a deep navy-teal sidebar, cool white pages, a teal primary and an aqua accent.
+   (The marketing app uses aubergine + gold at hue 340; this app uses hue ~200-230.)
+   Every colour in the app comes from these tokens, so changing them here re-themes everything.
+   NOTE: the token names are shared with the marketing app, so `--gold` here holds the AQUA accent. */
+:root {
+  --radius: 0.75rem;
+  --background: oklch(0.982 0.006 220);          /* cool off-white page */
+  --foreground: oklch(0.27 0.04 235);            /* slate navy text */
+  --card: oklch(1 0 0);
+  --muted-foreground: oklch(0.52 0.025 230);
+  --primary: oklch(0.45 0.09 205);               /* clinical teal */
+  --secondary: oklch(0.955 0.015 205);
+  --secondary-foreground: oklch(0.45 0.09 205);
+  --gold: oklch(0.8 0.1 185);                    /* accent: aqua (was gold) */
+  --gold-foreground: oklch(0.32 0.07 205);
+  --magenta: oklch(0.55 0.15 250);               /* second accent: medical blue */
+  --positive: oklch(0.6 0.13 160);
+  --warning: oklch(0.75 0.14 75);
+  --destructive: oklch(0.55 0.2 25);
+  --border: oklch(0.91 0.015 220);
+  --sidebar: oklch(0.3 0.06 230);                /* deep navy-teal */
+  --sidebar-end: oklch(0.24 0.055 235);          /* bottom of the sidebar's gradient */
+  --sidebar-foreground: oklch(0.95 0.01 210);
+  --sidebar-primary: oklch(0.85 0.1 185);        /* active link + brand name: aqua */
+  --sidebar-accent: oklch(0.37 0.07 225);
+  --font-display: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --panel-shadow: 0 1px 2px oklch(0.3 0.06 230 / 6%), 0 12px 32px -24px oklch(0.3 0.06 230 / 40%);
+
+  /* layout sizes, shared by the sidebar and the page */
+  --shell-gap: 0rem;
+
+  /* --- extra tokens, tinted to the clinical hue --- */
+  --muted: oklch(0.95 0.015 215);
+  --primary-foreground: oklch(0.99 0.005 210);
+  --success: var(--positive);
+  --warning-foreground: oklch(0.4 0.1 75);
+  --table-header: oklch(0.94 0.02 215);
+  --online: oklch(0.65 0.16 150);                /* the green "online" dot on the user card */
+
+  /* rating bands are a fixed red→green scale, not brand-tinted, so these carry over unchanged */
+  --rating-critical: oklch(0.94 0.06 28);
+  --rating-critical-foreground: oklch(0.45 0.18 28);
+  --rating-watch: oklch(0.95 0.07 72);
+  --rating-watch-foreground: oklch(0.44 0.12 62);
+  --rating-satisfactory: oklch(0.94 0.075 98);
+  --rating-good: oklch(0.93 0.07 136);
+  --rating-excellent: oklch(0.9 0.1 155);
+
+  --card-shadow: var(--panel-shadow);
+  --card-highlight: var(--gold);
+
+  /* dark chart panel (doughnut/risk-bar backgrounds) reuses the sidebar's dark tone */
+  --chart-panel: var(--sidebar);
+  --chart-panel-2: oklch(0.21 0.05 235);
+  --chart-panel-foreground: var(--sidebar-foreground);
+  --chart-panel-muted: oklch(0.72 0.03 225);
+  --chart-panel-border: oklch(0.44 0.06 225);
+  --chart-panel-highlight: oklch(0.8 0.1 185 / 40%);
+}
+
+/* ── reset ── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background-color: var(--background);   /* no white edges around the floating sidebar */
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--foreground);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;    /* crisp text everywhere */
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  text-decoration: none;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+img,
+svg {
+  display: block;
+}
+
+/* ── page frame ── */
+.gcd-shell {
+  display: flex;
+  align-items: flex-start;                 /* sidebar keeps its own height, doesn't stretch */
+  gap: var(--shell-gap);                   /* space between sidebar and page */
+  min-height: 100vh;
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+/* ── main column ── */
+.gcd-main-col {
+  display: flex;
+  min-width: 0;
+  min-height: 100vh;
+  flex: 1;
+  flex-direction: column;
+}
+/* ── page (each page's <main>) ── */
+.page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.empty {
+  color: var(--muted-foreground);
+  font-size: 14px;
+}
+
+/* ── no "bounce" scroll ──
+   Stops the page being dragged past its top/bottom edge (trackpad / mouse wheel),
+   which showed an empty strip above the header. */
+html,
+body {
+  overscroll-behavior: none;
+}

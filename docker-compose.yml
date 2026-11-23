@@ -1,0 +1,17 @@
+# docker-compose.yml (clinical frontend)
+# Start / update:  docker compose up -d --build
+# Logs:            docker compose logs -f web
+#
+# Image version: VERSION in the .env file next to this file (e.g. VERSION=1)
+#   -> gch-clinical-web:1, gch-clinical-web:2 ... (no .env -> gch-clinical-web:latest)
+#   Roll back: set an older VERSION, then  docker compose up -d   (no --build)
+# The API address is in .env.production (VITE_API_URL); change it there and rebuild.
+
+services:
+  web:
+    build: .
+    image: gch-clinical-web:${VERSION:-latest}
+    container_name: gch-clinical-web
+    ports:
+      - "3002:80"              # open in a browser: http://<server-ip>:3001
+    restart: unless-stopped

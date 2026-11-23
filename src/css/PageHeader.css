@@ -1,0 +1,46 @@
+/* PageHeader.css — the shared page header (PageHeader.jsx).
+   The header's colours, padding and title sizes stay as they were (the .page-header rules);
+   this only places the title on the left and the user card on the right. */
+
+.page-header.page-header--with-user {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;            /* on a narrow screen the user card moves under the title */
+  gap: 16px 24px;
+}
+
+.page-header__text {
+  min-width: 0;
+  flex: 1 1 320px;
+}
+
+.page-header__side {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: none;
+  max-width: 100%;
+}
+
+/* Base header look. In the marketing app these rules live in FoodSafety.css;
+   here they sit with the header itself so it is styled on every page. */
+.page-header {
+  padding: 24px 32px 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--card);
+}
+
+.page-header h1 {
+  margin: 0 0 6px;
+  font-family: var(--font-display, inherit);
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--foreground);
+}
+
+.page-header p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--muted-foreground);
+}

@@ -1,0 +1,89 @@
+/* UserBadge.css — the logged-in user's card in a page header (UserBadge.jsx) */
+
+.user-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 100%;
+  padding: 8px 18px 8px 8px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 0% 50%, color-mix(in oklab, var(--gold) 16%, transparent), transparent 55%),
+    linear-gradient(135deg, var(--card), var(--secondary));
+  box-shadow: 0 1px 2px color-mix(in oklab, var(--sidebar) 6%, transparent), 0 8px 22px color-mix(in oklab, var(--sidebar) 8%, transparent);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+
+.user-badge:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px color-mix(in oklab, var(--sidebar) 8%, transparent), 0 12px 28px color-mix(in oklab, var(--sidebar) 12%, transparent);
+}
+
+/* The round avatar: initials on the brand teal, with a thin aqua ring */
+.user-badge__avatar {
+  position: relative;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  font-family: "Red Hat Display", "Segoe UI", system-ui, sans-serif;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: .02em;
+  color: var(--primary-foreground);
+  background: linear-gradient(140deg, var(--primary) 0%, var(--sidebar) 60%, var(--sidebar-end) 100%);
+  box-shadow: 0 0 0 2px var(--card), 0 0 0 4px var(--gold);
+}
+
+/* The small green "online" dot */
+.user-badge__status {
+  position: absolute;
+  right: -1px;
+  bottom: -1px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--online);
+  border: 2px solid var(--card);
+}
+
+.user-badge__text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  line-height: 1.25;
+}
+
+.user-badge__greet {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--primary);
+}
+
+.user-badge__name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--foreground);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-badge__dept {
+  font-size: 12px;
+  color: var(--muted-foreground);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* On a narrow screen the card sits under the title */
+@media (max-width: 640px) {
+  .user-badge { padding-right: 14px; }
+  .user-badge__avatar { width: 38px; height: 38px; font-size: 13px; }
+}

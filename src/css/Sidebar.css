@@ -1,0 +1,142 @@
+/* ── sidebar ── */
+.gcd-sidebar {
+  display: none;
+  width: 16rem;
+  flex-shrink: 0;
+  flex-direction: column;
+  padding: 1.5rem 1rem;
+  background: linear-gradient(180deg, var(--sidebar), var(--sidebar-end));
+  color: var(--sidebar-foreground);
+    
+  position: sticky;   /* stays in place while the page scrolls */
+  top: 0;             /* stick to the top of the screen */
+  height: 100vh;      /* always exactly the screen height */
+  overflow-y: auto;   /* scroll inside the sidebar if its links don't fit */
+}
+
+.gcd-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0 0.25rem;
+}
+
+.gcd-brand__logo {
+  width: 2.1rem;
+  height: auto;
+  flex-shrink: 0;
+}
+
+.gcd-brand__name {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--sidebar-primary);
+}
+
+.gcd-brand__sub {
+  display: block;
+  font-size: 0.7rem;
+  color: color-mix(in oklab, var(--sidebar-foreground) 70%, transparent);
+}
+
+.gcd-nav {
+  margin-top: 1.75rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.gcd-nav__label {
+  padding: 0 0.75rem 0.35rem;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--sidebar-foreground) 55%, transparent);
+}
+
+.gcd-nav__item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.625rem 0.75rem;
+  border: 0;
+  border-radius: calc(var(--radius) + 4px);
+  background: none;
+  text-align: left;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  color: color-mix(in oklab, var(--sidebar-foreground) 80%, transparent);
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.gcd-nav__item:hover {
+  background-color: var(--sidebar-accent);
+  color: var(--sidebar-foreground);
+}
+
+.gcd-nav__item--active {
+  position: relative;
+  background-color: var(--sidebar-accent);
+  color: var(--sidebar-primary);
+}
+
+.gcd-nav__item--active::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.55rem;
+  bottom: 0.55rem;
+  width: 3px;
+  border-radius: 999px;
+  background-color: var(--sidebar-primary);
+}
+
+.gcd-signout {
+  margin-top: 1rem;
+}
+
+/* ── responsive ── */
+@media (min-width: 1024px) {
+  .gcd-sidebar {
+    display: flex;
+  }
+}
+
+/* Scrolling inside the sidebar never moves the page behind it. */
+.gcd-sidebar {
+  overscroll-behavior: contain;
+}
+
+/* ── shorter screens (most laptops) ──
+   Tighter spacing so all the links fit without the sidebar scrolling.
+   The sidebar can still scroll on very small screens, so no link is ever out of reach. */
+@media (max-height: 820px) {
+  .gcd-sidebar {
+    padding: 1.1rem 1rem;
+  }
+
+  .gcd-nav {
+    margin-top: 1.1rem;
+    gap: 0.6rem;
+  }
+
+  .gcd-nav__label {
+    margin: 0.3rem 0;
+    padding-bottom: 0.15rem;
+  }
+
+  .gcd-nav__item {
+    padding: 0.45rem 0.75rem;
+  }
+
+  .gcd-signout {
+    margin-top: 0.5rem;
+  }
+}

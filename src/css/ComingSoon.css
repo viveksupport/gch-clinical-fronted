@@ -1,0 +1,57 @@
+/* Coming soon page (inside the layout, under the page header) */
+.cs {
+  flex: 1;                                 /* fill the space under the header */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.cs__card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  max-width: 26rem;
+  width: 100%;
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) + 12px);
+  box-shadow: var(--panel-shadow);
+  padding: 2.5rem 2rem;
+  text-align: center;
+}
+
+.cs__logo {
+  width: 4.5rem;
+  height: auto;
+}
+
+/* gold pill with the clock icon */
+.cs__badge {
+  margin-top: 0.25rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background-color: color-mix(in oklab, var(--gold) 30%, transparent);
+  color: var(--gold-foreground);
+}
+
+.cs__title {
+  margin: 0;                               /* spacing comes from the card's gap */
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.cs__text {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--muted-foreground);
+  line-height: 1.55;
+}
