@@ -1,0 +1,242 @@
+/* Occupancy.css — the body of the Occupancy page (under the header and filter bar):
+   the service user list (ServiceUserTable.jsx). */
+.occ {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 1.5rem 32px 2rem;
+  min-width: 0;
+}
+
+.occ-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) + 4px);
+  box-shadow: var(--panel-shadow);
+  padding: 1.25rem 1.5rem;
+  min-width: 0;
+}
+
+.occ-card h2 {
+  margin: 0 0 2px;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.occ-card p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--muted-foreground);
+}
+
+/* ---------- service user list ---------- */
+.occ-list {
+  padding: 0;
+  /* no overflow: hidden here: it would cut off the filter dropdowns when the table is short */
+}
+
+/* the filter row sits above the table, so its open dropdown lists cover the table */
+.occ-list__filters {
+  position: relative;
+  z-index: 5;
+}
+
+/* round the table's bottom corners to match the card when there is no pager under it */
+.occ-table-wrap:last-child {
+  border-radius: 0 0 calc(var(--radius) + 4px) calc(var(--radius) + 4px);
+}
+
+.occ-list__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 1.1rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+/* the list's filters: a row of their own between the title and the table */
+.occ-list__filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 24px;
+  padding: 12px 1.5rem;
+  border-bottom: 1px solid var(--border);
+  background: color-mix(in oklab, var(--muted) 45%, var(--card));
+}
+
+/* File status and Suspended reason: a small label, then the pill dropdown (Dropdown.jsx) */
+.occ-filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+}
+
+.occ-filter__label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+  white-space: nowrap;
+}
+
+.occ-list .occ-filter .dd.pill .dd-btn {
+  height: 38px;
+  min-width: 150px;            /* a steady width, so "All" doesn't look like a tiny chip */
+  max-width: 280px;
+  padding: 0 8px 0 16px;
+  gap: 12px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  box-shadow: 0 1px 2px oklch(0.3 0.06 230 / 6%);
+}
+
+.occ-list .occ-filter .dd.pill .dd-arrow {
+  width: 22px;
+  height: 22px;
+}
+
+/* the reason names are longer, so that dropdown starts wider */
+.occ-list .occ-filter--wide .dd.pill .dd-btn {
+  min-width: 210px;
+}
+
+.occ-list .occ-filter .dd.pill .dd-list {
+  font-size: 0.85rem;
+}
+
+.occ-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: min(320px, 100%);
+  height: 38px;                /* the same height as the filter dropdowns */
+  padding: 0 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--card);
+  color: var(--muted-foreground);
+}
+
+.occ-search:focus-within {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--primary) 18%, transparent);
+}
+
+.occ-search input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: none;
+  font-size: 0.85rem;
+  color: var(--foreground);
+}
+
+.occ-table-wrap {
+  overflow-x: auto;            /* the wide table scrolls sideways on its own, not the page */
+  max-height: 620px;
+  overflow-y: auto;
+}
+
+.occ-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.83rem;
+}
+
+.occ-table th {
+  position: sticky;            /* the header row stays visible while the list scrolls */
+  top: 0;
+  z-index: 1;
+  padding: 10px 14px;
+  background: var(--table-header);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-align: left;
+  color: var(--muted-foreground);
+  white-space: nowrap;
+}
+
+.occ-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+  color: var(--foreground);
+}
+
+.occ-table tbody tr:hover td {
+  background: color-mix(in oklab, var(--primary) 4%, var(--card));
+}
+
+.occ-name {
+  font-weight: 600;
+}
+
+.occ-reason {
+  max-width: 240px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.occ-none {
+  padding: 2rem !important;
+  text-align: center;
+  color: var(--muted-foreground) !important;
+}
+
+/* small coloured labels: file status (Open / Closed / Deceased) and suspended status (Yes / No) */
+.occ-tag {
+  display: inline-block;
+  padding: 2px 9px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.occ-tag--open      { background: color-mix(in oklab, var(--positive) 16%, var(--card)); color: oklch(0.42 0.11 160); }
+.occ-tag--closed    { background: var(--muted); color: var(--muted-foreground); }
+.occ-tag--death     { background: oklch(0.93 0.01 260); color: oklch(0.4 0.03 260); }
+.occ-tag--suspended { background: var(--rating-watch); color: var(--rating-watch-foreground); }
+
+.occ-pager {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 10px 1.5rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.8rem;
+  color: var(--muted-foreground);
+}
+
+.occ-pager button {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--card);
+  color: var(--primary);
+  cursor: pointer;
+}
+
+.occ-pager button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+@media (max-width: 640px) {
+  .occ { padding: 1rem 16px 1.5rem; }
+  .occ-list__head { padding: 1rem; }
+}

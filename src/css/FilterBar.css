@@ -1,0 +1,303 @@
+/* FilterBar.css — the filter bar under the page header (FilterBar.jsx, Dropdown.jsx, MultiDropdown.jsx).
+   The same look as the marketing app's filter bar, using the clinical theme tokens from Layout.css.
+   Every rule sits under .fbar so the styles never leak into the rest of the page. The dropdown rules
+   also apply under .dd-host, so a Dropdown can be used elsewhere (for example above the Occupancy list). */
+
+/* ---------- the bar (sticks to the top while the page scrolls) ---------- */
+.fbar {
+  position: sticky;
+  top: 0;
+  z-index: 25;
+  background: color-mix(in oklab, var(--card) 92%, transparent);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 1px 2px oklch(0 0 0 / 5%);
+  font-size: 14px;
+  color: var(--foreground);
+}
+
+.fbar-in {
+  padding: 10px 32px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.fbar .fgroup {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.fbar .ftitle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-right: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+  white-space: nowrap;
+}
+
+.fbar .ico {
+  flex: none;
+}
+
+.fbar .frange {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--muted-foreground);
+}
+
+.fbar .fmeta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+  font-size: 12px;
+  color: var(--muted-foreground);
+  white-space: nowrap;
+}
+
+.fbar .fmeta strong {
+  color: var(--foreground);
+}
+
+.fbar .freset {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: var(--primary);
+  cursor: pointer;
+}
+
+.fbar .freset:not(:disabled):hover {
+  background: var(--muted);
+}
+
+.fbar .freset:disabled {
+  color: var(--muted-foreground);
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* ---------- dropdown (Dropdown.jsx / MultiDropdown.jsx) ---------- */
+:is(.fbar, .dd-host) .dd {
+  position: relative;
+  min-width: 0;
+}
+
+:is(.fbar, .dd-host) .dd-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  width: 100%;
+  height: 36px;
+  padding: 0 6px 0 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--card);
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+:is(.fbar, .dd-host) .dd-btn:hover {
+  border-color: var(--primary);
+}
+
+:is(.fbar, .dd-host) .dd.open .dd-btn {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--primary) 18%, transparent);
+}
+
+:is(.fbar, .dd-host) .dd-val {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* the arrow: a chevron in a soft circle that flips and fills when open */
+:is(.fbar, .dd-host) .dd-arrow {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  padding: 3px;
+  border-radius: 50%;
+  background: var(--muted);
+  color: var(--primary);
+  transition: transform 0.2s ease, background 0.15s, color 0.15s;
+}
+
+:is(.fbar, .dd-host) .dd-btn:hover .dd-arrow {
+  background: color-mix(in oklab, var(--primary) 16%, var(--card));
+}
+
+:is(.fbar, .dd-host) .dd.open .dd-arrow {
+  transform: rotate(180deg);
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+
+:is(.fbar, .dd-host) .dd-list {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 30;
+  min-width: 100%;
+  width: max-content;
+  max-width: min(360px, 90vw);
+  max-height: 288px;
+  overflow-y: auto;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 12px 28px oklch(0.3 0.06 230 / 16%);
+  scrollbar-width: thin;
+  animation: fbar-dd-in 0.12s ease-out;
+}
+
+:is(.fbar, .dd-host) .dd-list.right {
+  left: auto;
+  right: 0;
+}
+
+@keyframes fbar-dd-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: none; }
+}
+
+:is(.fbar, .dd-host) .dd-opt {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+:is(.fbar, .dd-host) .dd-opt span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+:is(.fbar, .dd-host) .dd-opt.act {
+  background: var(--muted);
+}
+
+:is(.fbar, .dd-host) .dd-opt.sel {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+:is(.fbar, .dd-host) .dd-check {
+  flex: none;
+  width: 14px;
+  height: 14px;
+}
+
+/* ---------- pill version of the dropdown ---------- */
+:is(.fbar, .dd-host) .dd.pill {
+  flex: none;
+  max-width: 100%;
+  display: inline-flex;
+  align-items: center;
+  /* the same space around each pill as the marketing filter bar (there it comes from its .ptt .pill rule),
+     so with the 8px gap the pills sit about 22px apart */
+  padding: 3px 10px 3px 4px;
+}
+
+:is(.fbar, .dd-host) .dd.pill .dd-btn {
+  width: auto;
+  max-width: 240px;
+  height: 32px;
+  padding: 0 6px 0 12px;
+  border-radius: 999px;
+  font-size: 12px;
+}
+
+:is(.fbar, .dd-host) .dd.pill .dd-arrow {
+  width: 18px;
+  height: 18px;
+}
+
+/* a changed filter is tinted */
+:is(.fbar, .dd-host) .dd.pill.active .dd-btn {
+  border-color: color-mix(in oklab, var(--primary) 45%, var(--card));
+  background: color-mix(in oklab, var(--primary) 9%, var(--card));
+  color: var(--primary);
+}
+
+:is(.fbar, .dd-host) .dd.pill .dd-list {
+  font-size: 13px;
+}
+
+/* ---------- care home filter: tick several homes ---------- */
+:is(.fbar, .dd-host) .dd.multi .dd-list {
+  max-height: 340px;
+}
+
+:is(.fbar, .dd-host) .dd.multi .dd-opt {
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+:is(.fbar, .dd-host) .dd-box {
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  border: 1.5px solid var(--border);
+  border-radius: 4px;
+  background: var(--card);
+  color: var(--primary-foreground);
+}
+
+:is(.fbar, .dd-host) .dd-box.on {
+  border-color: var(--primary);
+  background: var(--primary);
+}
+
+:is(.fbar, .dd-host) .dd-box svg {
+  width: 12px;
+  height: 12px;
+}
+
+/* a line under "All care homes", separating it from the single homes */
+:is(.fbar, .dd-host) .dd-opt.dd-all {
+  margin-bottom: 4px;
+  border-bottom: 1px solid var(--border);
+  border-radius: 6px 6px 0 0;
+  font-weight: 600;
+}
+
+@media (max-width: 640px) {
+  .fbar-in { padding: 10px 16px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :is(.fbar, .dd-host) .dd-arrow { transition: none; }
+  :is(.fbar, .dd-host) .dd-list { animation: none; }
+}
