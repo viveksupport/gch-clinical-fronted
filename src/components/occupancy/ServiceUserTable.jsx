@@ -71,13 +71,6 @@ export default function ServiceUserTable({ users }) {
     return STATUS_CHOICES.map(([value, text]) => [value, value === "all" ? text : `${text} (${counts[value].toLocaleString()})`]);
   }, [rows]);
 
-  // The suspended status choices (the suspended_status field), each with how many rows it would show: "Yes (1,048)".
-  const suspendedOptions = useMemo(() => {
-    const yesCount = rows.filter((row) => row.user.suspended_status).length;
-    const counts = { yes: yesCount, no: rows.length - yesCount };
-    return SUSPENDED_CHOICES.map(([value, text]) => [value, value === "all" ? text : `${text} (${counts[value].toLocaleString()})`]);
-  }, [rows]);
-
   // The suspended reason choices, each with how many suspended service users have it: "Hospital admission (207)".
   const reasonOptions = useMemo(() => {
     const count = (value) => rows.filter((row) => row.reason === value).length;
@@ -128,7 +121,7 @@ export default function ServiceUserTable({ users }) {
         <div className="occ-filter dd-host">
           <span className="occ-filter__label">Suspended status</span>
           <Dropdown className="pill" label="Suspended status" value={suspended} active={suspended !== "all"}
-            options={suspendedOptions} onChange={onSuspended} />
+            options={SUSPENDED_CHOICES} onChange={onSuspended} />
         </div>
         <div className="occ-filter occ-filter--wide dd-host">
           <span className="occ-filter__label">Suspended reason</span>
@@ -144,6 +137,7 @@ export default function ServiceUserTable({ users }) {
               <th>Name</th>
               <th>File opened</th>
               <th>File closed</th>
+              <th>Closed reason</th>
               <th>Status</th>
               <th>Suspended status</th>
               <th>Suspended date</th>
@@ -156,7 +150,8 @@ export default function ServiceUserTable({ users }) {
               <tr key={user.user_id}>
                 <td className="occ-name">{fullName(user)}</td>
                 <td>{niceDate(user.file_opened)}</td>
-                <td title={user.closed_reason || undefined}>{niceDate(user.file_closed)}</td>
+                <td>{niceDate(user.file_closed)}</td>
+                <td className="occ-reason" title={user.closed_reason || undefined}>{user.closed_reason || "—"}</td>
                 <td>
                   <span className={`occ-tag occ-tag--${user.file_status === "open" ? "open" : user.is_death ? "death" : "closed"}`}>
                     {user.file_status === "open" ? "Open" : user.is_death ? "Deceased" : "Closed"}
@@ -173,7 +168,7 @@ export default function ServiceUserTable({ users }) {
               </tr>
             ))}
             {shown.length === 0 && (
-              <tr><td colSpan={8}className="occ-none">No service users match.</td></tr>
+              <tr><td colSpan={9} className="occ-none">No service users match.</td></tr>
             )}
           </tbody>
         </table>
