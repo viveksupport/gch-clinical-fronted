@@ -14,9 +14,3 @@ export function canRead(code) {
   if (!code) return true;
   return Boolean(accessMap()[code]?.read);
 }
-
-
-export function canWrite(code) {
-  if (!code) return false;
-  return Boolean(accessMap()[code]?.write);
-}

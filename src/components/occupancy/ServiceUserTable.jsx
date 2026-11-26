@@ -5,7 +5,7 @@
 // a search box (home, name or reason) and pages of PAGE_SIZE rows, so long lists stay quick.
 //
 // Props:
-//   users = the period's service users (utils/serviceUserRules.js): [{ care_home_name, user_id, first_name, ..., is_death, is_hospital }]
+//   users = the period's service users (straight from the API): [{ care_home_name, user_id, first_name, ..., file_status, closed_reason }]
 
 import { useMemo, useState } from "react";
 import { ChevronLeft, ChevronRight, Search } from "lucide-react";

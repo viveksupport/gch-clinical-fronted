@@ -1,5 +1,6 @@
 /* Occupancy.css — the body of the Occupancy page (under the header and filter bar):
-   the service user list (ServiceUserTable.jsx). */
+   the KPI cards (KpiCards.jsx), the service user list (ServiceUserTable.jsx)
+   and the care home summary (HomeKpiTable.jsx). */
 .occ {
   flex: 1;
   display: flex;
@@ -30,6 +31,92 @@
   margin: 0;
   font-size: 0.85rem;
   color: var(--muted-foreground);
+}
+
+/* ---------- KPI cards (KpiCards.jsx) ---------- */
+/* four cards a row on a wide screen, two on a tablet, one on a phone */
+.occ-kpis {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+/* each card's colour: its edge, its icon, and the icon's light circle */
+.occ-kpi--blue  { --kpi-colour: oklch(0.55 0.15 250); }
+.occ-kpi--teal  { --kpi-colour: var(--primary); }
+.occ-kpi--green { --kpi-colour: oklch(0.55 0.13 160); }
+.occ-kpi--grey  { --kpi-colour: oklch(0.5 0.02 250); }
+.occ-kpi--amber { --kpi-colour: oklch(0.72 0.15 70); }
+.occ-kpi--red   { --kpi-colour: var(--destructive); }
+
+.occ-kpi {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 1.15rem 1.25rem 1.1rem 1.5rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) + 4px);
+  box-shadow: var(--panel-shadow);
+}
+
+/* the coloured strip down the left edge */
+.occ-kpi::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 4px;
+  background: var(--kpi-colour);
+}
+
+.occ-kpi__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.occ-kpi__label {
+  padding-top: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+.occ-kpi__icon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: color-mix(in oklab, var(--kpi-colour) 14%, var(--card));
+  color: var(--kpi-colour);
+}
+
+.occ-kpi__value {
+  font-family: var(--font-display);
+  font-size: 2.1rem;
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--foreground);
+}
+
+.occ-kpi__note {
+  font-size: 0.85rem;
+  color: var(--muted-foreground);
+}
+
+@media (max-width: 1100px) {
+  .occ-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 560px) {
+  .occ-kpis { grid-template-columns: 1fr; }
 }
 
 /* ---------- service user list ---------- */
@@ -240,3 +327,178 @@
   .occ { padding: 1rem 16px 1.5rem; }
   .occ-list__head { padding: 1rem; }
 }
+
+/* ---------- care home summary (HomeKpiTable.jsx) ---------- */
+/* the summary's colours, shared by the table and the legend above it */
+.occ-summary {
+  --good: oklch(0.52 0.13 160);
+  --warn: oklch(0.66 0.15 65);
+  --bad: var(--destructive);
+}
+
+.occ-home-table {
+  table-layout: fixed;                  /* the widths below are kept, whatever the numbers are */
+  min-width: 1100px;                    /* on a narrow screen the table scrolls sideways instead of squashing */
+  font-variant-numeric: tabular-nums;   /* every digit the same width, so columns line up */
+}
+
+.occ-home-table .occ-col-home   { width: 17%; }
+.occ-home-table .occ-col-rating { width: 14%; }   /* the nine number columns share the rest equally */
+
+/* long names wrap instead of pushing the columns apart */
+.occ-home-table td.occ-name { white-space: normal; }
+
+/* the title with its small icon */
+.occ-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.occ-title svg { color: var(--primary); }
+
+/* every number sits in the middle of its column, right under its heading */
+.occ-home-table .num { text-align: center; }
+
+/* column headings: may wrap onto two lines ("Hospital admissions"), sit on the same baseline */
+.occ-home-table thead .occ-sub-row th {
+  white-space: normal;
+  line-height: 1.3;
+  vertical-align: bottom;
+  cursor: help;                  /* hover for what the column counts */
+}
+
+.occ-strong { font-weight: 600; }
+
+/* a faint line before each column group (Capacity, Resident movement, Clinical events) */
+.occ-home-table .grp { border-left: 1px solid var(--border); }
+
+/* two header rows: the group names, then the column names. Both stay in view while the list scrolls. */
+.occ-home-table thead .occ-group-row th {
+  height: 34px;
+  padding-top: 8px;
+  padding-bottom: 4px;
+}
+
+.occ-home-table thead .occ-group-row th.grp {
+  text-align: center;
+  color: var(--foreground);
+  letter-spacing: 0.08em;
+}
+
+.occ-home-table thead .occ-sub-row th {
+  top: 34px;                     /* sits under the group row */
+  padding-top: 4px;
+  font-size: 0.68rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.occ-home-table thead th[rowspan] { vertical-align: bottom; }
+
+/* zero counts fade back */
+.occ-zero { color: color-mix(in oklab, var(--muted-foreground) 55%, var(--card)) !important; }
+
+/* net movement colours */
+.occ-net--good { color: var(--good) !important; }
+.occ-net--bad  { color: var(--bad) !important; }
+.occ-net--zero { color: var(--muted-foreground) !important; }
+
+/* occupancy %: a thin bar with the number beside it */
+.occ-rate--good { --rate: var(--good); }
+.occ-rate--warn { --rate: var(--warn); }
+.occ-rate--bad  { --rate: var(--bad); }
+.occ-rate--none { --rate: var(--muted-foreground); }
+
+.occ-rate {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.occ-rate__track {
+  width: 44px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--muted);
+  overflow: hidden;
+}
+
+.occ-rate__fill {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--rate);
+}
+
+.occ-rate__text {
+  min-width: 44px;
+  text-align: right;
+  font-weight: 600;
+  color: var(--rate);
+}
+
+/* the CQC rating: a coloured dot and the rating's name */
+.occ-rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.occ-rating__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--rating-colour);
+}
+
+.occ-rating--outstanding          { --rating-colour: oklch(0.55 0.13 160); }
+.occ-rating--good                 { --rating-colour: oklch(0.55 0.15 255); }
+.occ-rating--requires-improvement { --rating-colour: oklch(0.72 0.15 70); }
+.occ-rating--inadequate           { --rating-colour: var(--destructive); }
+.occ-rating--none                 { --rating-colour: var(--border); color: var(--muted-foreground); }
+
+/* the legend at the right of the Month / Year bar */
+.occ-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  margin-left: auto;
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+}
+
+.occ-legend__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.occ-legend__item i {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  background: var(--rate);
+}
+
+/* the dark portfolio total row, kept in view at the bottom while the list scrolls */
+.occ-home-table tfoot td {
+  position: sticky;
+  bottom: 0;
+  padding: 12px 14px;
+  background: var(--sidebar);
+  color: var(--sidebar-foreground);
+  font-weight: 700;
+  white-space: nowrap;
+  border-bottom: 0;
+}
+
+.occ-home-table tfoot td.grp { border-left-color: color-mix(in oklab, var(--sidebar-foreground) 15%, transparent); }
+.occ-home-table tfoot .occ-foot-note { color: var(--sidebar-primary); font-weight: 600; }
+.occ-home-table tfoot .occ-zero,
+.occ-home-table tfoot [class*="occ-net--"] { color: var(--sidebar-foreground) !important; }
+.occ-home-table tfoot .occ-rate__track { background: color-mix(in oklab, var(--sidebar-foreground) 20%, transparent); }
+.occ-home-table tfoot .occ-rate__text { color: var(--sidebar-foreground); }

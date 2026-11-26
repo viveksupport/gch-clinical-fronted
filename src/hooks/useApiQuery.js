@@ -5,7 +5,6 @@
 //   loading = true while waiting for the reply
 //   error   = the error message if the call failed ("" if it worked)
 
-import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 // TanStack's answer → { data, loading, error }
@@ -15,18 +14,6 @@ function resultOf(query) {
     loading: query.isLoading,
     error: query.error?.message ?? "",
   };
-}
-
-// For a GET that returns a whole list (no filters), for example every home's CQC ratings.
-//   name    = the name of this data in the cache, for example "cqcReviews"
-//   apiCall = the function that calls the API (from src/api)
-// Loaded once, then reused for 5 minutes (the default in main.jsx) by every page that asks for it.
-export function useListQuery(name, apiCall) {
-  const query = useQuery({
-    queryKey: [name],
-    queryFn: apiCall,
-  });
-  return resultOf(query);
 }
 
 // For a POST with a date range and care homes, for example the clock records.
@@ -44,12 +31,4 @@ export function useDateRangeQuery(name, apiCall, startDate, endDate, homeIds) {
     enabled: Boolean(idsText && startDate && endDate),
   });
   return resultOf(query);
-}
-
-// Turns a hook's answer into the rows a page uses: { rows, loading, error }.
-//   makeRows = a function that turns the API reply into rows (it must be defined outside the component)
-// The rows are worked out again only when a new reply arrives, not on every redraw.
-export function useRows(query, makeRows) {
-  const rows = useMemo(() => (query.data ? makeRows(query.data) : []), [query.data, makeRows]);
-  return { rows, loading: query.loading, error: query.error };
 }

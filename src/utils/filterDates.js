@@ -20,6 +20,11 @@ export function monthKeyOf(dateText) {
   return dateText.slice(0, 7);
 }
 
+// This month as a month key.   returns: "2026-11"
+export function thisMonth() {
+  return monthKeyOf(toDateText(new Date()));
+}
+
 // takes: "2025-10"   returns: { year: 2025, month: 9, longLabel: "Oct 2025" }   (month 0 = January)
 function monthInfo(monthKey) {
   const year = Number(monthKey.slice(0, 4));
