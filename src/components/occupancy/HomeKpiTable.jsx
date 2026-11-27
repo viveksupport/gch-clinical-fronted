@@ -79,18 +79,50 @@ function ratingClass(rating) {
   return known.includes(key) ? key : "none";
 }
 
-// The nine number columns, in order (three per group): [key, heading, what it counts (shown on hover)]
-const COLUMNS = [
-  ["beds", "CQC beds", "Registered beds from the home's CQC record"],
-  ["occupied", "Avg occupied", "Average beds in use per day: each resident's days in the home this month, added up, ÷ days in the month"],
-  ["rate", "Occupancy %", "Avg occupied ÷ CQC beds"],
-  ["admissions", "Admissions", "Residents who moved in during the month"],
-  ["discharges", "Discharges", "Files closed during the month"],
-  ["net", "Net change", "Admissions − discharges"],
-  ["hospital", "Hospital admissions", "Suspended during the month for a hospital admission"],
-  ["deaths", "Deaths", "Files closed during the month as Deceased (expected or unexpected)"],
-  ["suspended", "Suspensions", "Suspended during the month, for any reason"],
+// The rating as CQC writes it ("Requires improvement"), whatever case the data has; nothing → "Not rated"
+function ratingText(rating) {
+  const text = (rating || "").trim().toLowerCase();
+  return text ? text.charAt(0).toUpperCase() + text.slice(1) : "Not rated";
+}
+
+// The column groups, left to right. Each says WHEN its figures are measured (note), because they differ:
+// capacity is a monthly average, movement and deaths happen within the month, and suspension is the
+// status right now (suspended_status today, open files only), not a count of events in the month.
+// columns: [key, heading, what it counts (shown on hover)]
+const GROUPS = [
+  {
+    title: "Capacity", note: "Monthly average",
+    columns: [
+      ["beds", "CQC beds", "Registered beds from the home's CQC record"],
+      ["occupied", "Avg occupied", "Average beds in use per day: each resident's days in the home this month, added up, ÷ days in the month"],
+      ["rate", "Occupancy %", "Avg occupied ÷ CQC beds"],
+    ],
+  },
+  {
+    title: "Resident movement", note: "In the month",
+    columns: [
+      ["admissions", "Admissions", "Residents who moved in during the month"],
+      ["discharges", "Discharges", "Files closed during the month, for any reason (deaths included)"],
+      ["net", "Net change", "Admissions − discharges"],
+    ],
+  },
+  {
+    title: "Deaths", note: "In the month",
+    columns: [
+      ["deaths", "Deaths", "Files closed during the month as Deceased (expected or unexpected); also counted in Discharges"],
+    ],
+  },
+  {
+    title: "Suspension", note: "Current", live: true,
+    columns: [
+      ["hospital", "Hospital admission", "Open files suspended right now with the category Hospital admission"],
+      ["suspended", "All suspended", "Open files suspended right now, for any reason (hospital admissions included)"],
+    ],
+  },
 ];
+
+// Every number column in order, for the column widths
+const COLUMNS = GROUPS.flatMap((group) => group.columns);
 
 // A count cell: zero is shown faded, so the numbers that matter stand out
 function Count({ value, className = "" }) {
@@ -110,7 +142,7 @@ function RateCell({ value }) {
   );
 }
 
-// The number cells shared by each home's row and the total row, in their three groups
+// The number cells shared by each home's row and the total row, in the same order as GROUPS
 function FigureCells({ figures }) {
   return (
     <>
@@ -122,10 +154,11 @@ function FigureCells({ figures }) {
       <Count value={figures.new_admission} className="grp" />
       <Count value={figures.recent_discharge} />
       <td className={`num occ-strong occ-net--${netBand(figures.net_movement)}`}>{signedNumber(figures.net_movement)}</td>
-      {/* Clinical events */}
+      {/* Deaths */}
+      <Count value={figures.recent_deaths} className="grp" />
+      {/* Suspension (current) */}
       <Count value={figures.hospital_admission} className="grp" />
-      <Count value={figures.recent_deaths} />
-      <Count value={figures.suspended_profiles} />
+      <Count value={figures.suspended_profiles} className="occ-strong" />
     </>
   );
 }
@@ -149,24 +182,31 @@ export default function HomeKpiTable({ month, onMonthChange, result }) {
   else content = (
     <div className="occ-table-wrap">
       <table className="occ-table occ-home-table">
-        {/* column widths: the name and rating, then nine equal number columns */}
+        {/* column widths: the name and rating, a wider occupancy column (bar + %), then equal number columns */}
         <colgroup>
           <col className="occ-col-home" />
           <col className="occ-col-rating" />
-          {COLUMNS.map(([key]) => <col key={key} />)}
+          {COLUMNS.map(([key]) => <col key={key} className={`occ-col-${key}`} />)}
         </colgroup>
         <thead>
           <tr className="occ-group-row">
-            <th rowSpan={2}>Care home</th>
-            <th rowSpan={2}>CQC rating</th>
-            <th colSpan={3} className="grp">Capacity</th>
-            <th colSpan={3} className="grp">Resident movement</th>
-            <th colSpan={3} className="grp">Clinical events</th>
+            <th colSpan={2}>
+              <span className="occ-grp__title">Care home</span>
+              <span className="occ-grp__note">Latest CQC report</span>
+            </th>
+            {GROUPS.map((group) => (
+              <th key={group.title} colSpan={group.columns.length} className="grp">
+                <span className="occ-grp__title">{group.title}</span>
+                <span className={`occ-grp__note ${group.live ? "occ-grp__note--live" : ""}`}>{group.note}</span>
+              </th>
+            ))}
           </tr>
           <tr className="occ-sub-row">
-            {COLUMNS.map(([key, title, help], index) => (
-              <th key={key} className={`num ${index % 3 === 0 ? "grp" : ""}`} title={help}>{title}</th>
-            ))}
+            <th>Name</th>
+            <th>CQC rating</th>
+            {GROUPS.flatMap((group) => group.columns.map(([key, title, help], index) => (
+              <th key={key} className={`num ${index === 0 ? "grp" : ""}`} title={help}>{title}</th>
+            )))}
           </tr>
         </thead>
         <tbody>
@@ -176,7 +216,7 @@ export default function HomeKpiTable({ month, onMonthChange, result }) {
               <td>
                 <span className={`occ-rating occ-rating--${ratingClass(home.cqc_rating)}`}>
                   <span className="occ-rating__dot" aria-hidden="true" />
-                  {home.cqc_rating || "Not rated"}
+                  {ratingText(home.cqc_rating)}
                 </span>
               </td>
               <FigureCells figures={home} />
@@ -200,8 +240,8 @@ export default function HomeKpiTable({ month, onMonthChange, result }) {
     <section className="occ-card occ-list occ-summary" aria-label="Care home summary">
       <div className="occ-list__head">
         <div>
-          <h2 className="occ-title"><Building2 size={18} aria-hidden="true" /> Care home summary</h2>
-          <p>{monthTitle(month)} · average daily occupancy, movement and clinical events within the month</p>
+          <h2 className="occ-title"><Building2 size={16} aria-hidden="true" /> Care home summary</h2>
+          <p>{monthTitle(month)} · average daily occupancy, movement and deaths within the month, and who is suspended now</p>
         </div>
       </div>
 

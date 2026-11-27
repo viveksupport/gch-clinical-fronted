@@ -5,8 +5,8 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
-  padding: 1.5rem 32px 2rem;
+  gap: 1rem;
+  padding: 1.25rem 24px 1.75rem;
   min-width: 0;
 }
 
@@ -19,17 +19,23 @@
   min-width: 0;
 }
 
+/* a card with an open dropdown sits above the cards after it, so its list is never covered by them */
+.occ-card:has(.dd.open) {
+  position: relative;
+  z-index: 20;
+}
+
 .occ-card h2 {
   margin: 0 0 2px;
   font-family: var(--font-display);
-  font-size: 1.15rem;
+  font-size: 1rem;
   font-weight: 600;
   color: var(--foreground);
 }
 
 .occ-card p {
   margin: 0;
-  font-size: 0.85rem;
+  font-size: 0.78rem;
   color: var(--muted-foreground);
 }
 
@@ -38,7 +44,7 @@
 .occ-kpis {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 1rem;
+  gap: 0.85rem;
 }
 
 /* each card's colour: its edge, its icon, and the icon's light circle */
@@ -54,8 +60,8 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  padding: 1.15rem 1.25rem 1.1rem 1.5rem;
+  gap: 4px;
+  padding: 0.85rem 1rem 0.8rem 1.2rem;
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: calc(var(--radius) + 4px);
@@ -79,8 +85,8 @@
 }
 
 .occ-kpi__label {
-  padding-top: 6px;
-  font-size: 0.75rem;
+  padding-top: 4px;
+  font-size: 0.66rem;
   font-weight: 600;
   letter-spacing: 0.07em;
   text-transform: uppercase;
@@ -91,8 +97,8 @@
   display: grid;
   place-items: center;
   flex-shrink: 0;
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   background: color-mix(in oklab, var(--kpi-colour) 14%, var(--card));
   color: var(--kpi-colour);
@@ -100,14 +106,14 @@
 
 .occ-kpi__value {
   font-family: var(--font-display);
-  font-size: 2.1rem;
+  font-size: 1.65rem;
   font-weight: 700;
   line-height: 1.1;
   color: var(--foreground);
 }
 
 .occ-kpi__note {
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   color: var(--muted-foreground);
 }
 
@@ -142,7 +148,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 1.1rem 1.5rem;
+  padding: 0.85rem 1.25rem;
   border-bottom: 1px solid var(--border);
 }
 
@@ -151,8 +157,8 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 10px 24px;
-  padding: 12px 1.5rem;
+  gap: 8px 20px;
+  padding: 8px 1.25rem;
   border-bottom: 1px solid var(--border);
   background: color-mix(in oklab, var(--muted) 45%, var(--card));
 }
@@ -161,12 +167,12 @@
 .occ-filter {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  font-size: 14px;
+  gap: 8px;
+  font-size: 13px;
 }
 
 .occ-filter__label {
-  font-size: 0.7rem;
+  font-size: 0.64rem;
   font-weight: 600;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -175,28 +181,28 @@
 }
 
 .occ-list .occ-filter .dd.pill .dd-btn {
-  height: 38px;
-  min-width: 150px;            /* a steady width, so "All" doesn't look like a tiny chip */
+  height: 32px;
+  min-width: 140px;            /* a steady width, so "All" doesn't look like a tiny chip */
   max-width: 280px;
   padding: 0 8px 0 16px;
-  gap: 12px;
-  font-size: 0.85rem;
+  gap: 10px;
+  font-size: 0.78rem;
   font-weight: 500;
   box-shadow: 0 1px 2px oklch(0.3 0.06 230 / 6%);
 }
 
 .occ-list .occ-filter .dd.pill .dd-arrow {
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
 }
 
 /* the reason names are longer, so that dropdown starts wider */
 .occ-list .occ-filter--wide .dd.pill .dd-btn {
-  min-width: 210px;
+  min-width: 190px;
 }
 
 .occ-list .occ-filter .dd.pill .dd-list {
-  font-size: 0.85rem;
+  font-size: 0.78rem;
 }
 
 .occ-search {
@@ -204,7 +210,7 @@
   align-items: center;
   gap: 8px;
   width: min(320px, 100%);
-  height: 38px;                /* the same height as the filter dropdowns */
+  height: 32px;                /* the same height as the filter dropdowns */
   padding: 0 12px;
   border: 1px solid var(--border);
   border-radius: 999px;
@@ -223,29 +229,29 @@
   border: 0;
   outline: 0;
   background: none;
-  font-size: 0.85rem;
+  font-size: 0.78rem;
   color: var(--foreground);
 }
 
 .occ-table-wrap {
   overflow-x: auto;            /* the wide table scrolls sideways on its own, not the page */
-  max-height: 620px;
+  max-height: 460px;            /* about 12 rows, then the list scrolls inside its card */
   overflow-y: auto;
 }
 
 .occ-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.83rem;
+  font-size: 0.78rem;
 }
 
 .occ-table th {
   position: sticky;            /* the header row stays visible while the list scrolls */
   top: 0;
   z-index: 1;
-  padding: 10px 14px;
+  padding: 8px 12px;
   background: var(--table-header);
-  font-size: 0.7rem;
+  font-size: 0.64rem;
   font-weight: 600;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -255,11 +261,48 @@
 }
 
 .occ-table td {
-  padding: 10px 14px;
+  padding: 7px 12px;
   border-bottom: 1px solid var(--border);
   white-space: nowrap;
   color: var(--foreground);
 }
+
+/* ---- Service users list (ServiceUserTable.jsx) ---- */
+
+/* two header rows, both stuck to the top while the list scrolls: the group row at 0,
+   the column-name row right under it (its fixed height), so no rows show between them */
+/* The group row is exactly 34px: no vertical padding, line-height = height, no real borders
+   (borders on sticky cells in a collapsed table scroll away and add height; lines are inset shadows). */
+.occ-su-table thead tr.occ-table__groups th {
+  top: 0;
+  z-index: 3;
+  height: 28px;
+  padding: 0 12px;
+  line-height: 28px;
+  border: 0;
+  background: var(--card);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+}
+.occ-su-table thead tr:last-child th { top: 28px; z-index: 2; }
+/* one pixel of overlap upwards, so no row can ever show through a sub-pixel gap */
+.occ-su-table thead tr:last-child th { box-shadow: 0 -1px 0 var(--table-header); }
+
+/* centred columns; the Name column stays left-aligned so names start at the same point */
+.occ-su-table th,
+.occ-su-table td { text-align: center; vertical-align: middle; }
+.occ-su-table .occ-left { text-align: left; }
+
+/* both groups look the same: coloured heading text over a thin line; no cell tints, so the colours never compete */
+.occ-su-table .occ-group { color: var(--primary); box-shadow: inset 0 -2px 0 color-mix(in oklab, var(--primary) 35%, var(--card)); }
+.occ-su-table .occ-group--susp {
+  box-shadow: inset 0 -2px 0 color-mix(in oklab, var(--primary) 35%, var(--card)), inset 1px 0 0 var(--border);
+}
+
+/* a divider before the suspension columns is the only thing that sets them apart */
+.occ-su-table .occ-susp--first { min-width: 140px; }
+.occ-su-table td.occ-susp--first { border-left: 1px solid var(--border); }
+.occ-su-table thead tr:last-child th.occ-susp--first { box-shadow: inset 1px 0 0 var(--border), 0 -1px 0 var(--table-header); }
 
 .occ-table tbody tr:hover td {
   background: color-mix(in oklab, var(--primary) 4%, var(--card));
@@ -281,36 +324,55 @@
   color: var(--muted-foreground) !important;
 }
 
-/* small coloured labels: file status (Open / Closed / Deceased) and suspended status (Yes / No) */
+/* small coloured label for the file status (Open / Closed) */
 .occ-tag {
   display: inline-block;
-  padding: 2px 9px;
+  padding: 2px 8px;
   border-radius: 999px;
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   font-weight: 600;
 }
 
 .occ-tag--open      { background: color-mix(in oklab, var(--positive) 16%, var(--card)); color: oklch(0.42 0.11 160); }
 .occ-tag--closed    { background: var(--muted); color: var(--muted-foreground); }
-.occ-tag--death     { background: oklch(0.93 0.01 260); color: oklch(0.4 0.03 260); }
-.occ-tag--suspended { background: var(--rating-watch); color: var(--rating-watch-foreground); }
+
+/* current suspension status: an icon and a word. Most rows are "Not suspended", so that one is plain and quiet;
+   "Suspended" is the only one in a coloured badge, so the few suspended residents stand out down the column. */
+.occ-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px 3px 8px;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.occ-badge svg { flex: none; }
+.occ-badge--suspended {
+  background: var(--rating-watch);
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--rating-watch-foreground) 25%, transparent);
+  color: var(--rating-watch-foreground);
+}
+.occ-badge--active { color: var(--muted-foreground); font-weight: 500; }
+.occ-badge--active svg { color: var(--positive); }
 
 .occ-pager {
   display: flex;
   align-items: center;
   justify-content: flex-end;
   gap: 10px;
-  padding: 10px 1.5rem;
+  padding: 8px 1.25rem;
   border-top: 1px solid var(--border);
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: var(--muted-foreground);
 }
 
 .occ-pager button {
   display: grid;
   place-items: center;
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
   border: 1px solid var(--border);
   border-radius: 50%;
   background: var(--card);
@@ -338,12 +400,17 @@
 
 .occ-home-table {
   table-layout: fixed;                  /* the widths below are kept, whatever the numbers are */
-  min-width: 1100px;                    /* on a narrow screen the table scrolls sideways instead of squashing */
+  min-width: 1280px;                  /* on a narrow screen the table scrolls sideways instead of squashing */
   font-variant-numeric: tabular-nums;   /* every digit the same width, so columns line up */
 }
 
-.occ-home-table .occ-col-home   { width: 17%; }
-.occ-home-table .occ-col-rating { width: 14%; }   /* the nine number columns share the rest equally */
+/* fixed widths for the text columns and the occupancy bar; the number columns share the rest */
+.occ-home-table .occ-col-home   { width: 210px; }
+.occ-home-table .occ-col-rating { width: 180px; }   /* fits "Requires improvement" with its dot */
+.occ-home-table .occ-col-rate   { width: 136px; }   /* fits the bar + "100.0%" */
+
+/* the occupancy cell never spills into the next column */
+.occ-home-table .occ-rate { white-space: nowrap; }
 
 /* long names wrap instead of pushing the columns apart */
 .occ-home-table td.occ-name { white-space: normal; }
@@ -357,43 +424,67 @@
 
 .occ-title svg { color: var(--primary); }
 
-/* every number sits in the middle of its column, right under its heading */
-.occ-home-table .num { text-align: center; }
-
-/* column headings: may wrap onto two lines ("Hospital admissions"), sit on the same baseline */
-.occ-home-table thead .occ-sub-row th {
-  white-space: normal;
-  line-height: 1.3;
-  vertical-align: bottom;
-  cursor: help;                  /* hover for what the column counts */
-}
+/* every heading and value sits in the middle of its column, the care home name and rating too */
+.occ-home-table th,
+.occ-home-table td { text-align: center; }
 
 .occ-strong { font-weight: 600; }
 
-/* a faint line before each column group (Capacity, Resident movement, Clinical events) */
+/* a faint line before each column group (Capacity, Resident movement, Deaths, Suspension) */
 .occ-home-table .grp { border-left: 1px solid var(--border); }
 
-/* two header rows: the group names, then the column names. Both stay in view while the list scrolls. */
+/* Two sticky header rows: the group row is a fixed 44px (no vertical padding, so it can't grow),
+   and the column-name row sticks right under it at top: 44px. */
 .occ-home-table thead .occ-group-row th {
-  height: 34px;
-  padding-top: 8px;
-  padding-bottom: 4px;
+  height: 44px;
+  padding: 0 8px;
+  box-sizing: border-box;
+  vertical-align: middle;
 }
 
-.occ-home-table thead .occ-group-row th.grp {
-  text-align: center;
-  color: var(--foreground);
-  letter-spacing: 0.08em;
-}
-
+/* column names, on one baseline across the table; they may wrap onto two lines ("Hospital admission") */
 .occ-home-table thead .occ-sub-row th {
-  top: 34px;                     /* sits under the group row */
-  padding-top: 4px;
-  font-size: 0.68rem;
+  top: 44px;
+  padding: 3px 8px 8px;
+  font-size: 0.62rem;
+  line-height: 1.3;
+  vertical-align: bottom;
+  white-space: normal;
   border-bottom: 1px solid var(--border);
+  box-shadow: 0 -1px 0 var(--table-header);   /* covers any sub-pixel gap under the group row */
 }
+.occ-home-table thead .occ-sub-row th.num { cursor: help; }   /* hover for what the column counts */
 
-.occ-home-table thead th[rowspan] { vertical-align: bottom; }
+/* group heading: the name, and under it when its figures are measured */
+.occ-grp__title {
+  display: block;
+  color: var(--foreground);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+}
+.occ-grp__note {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 2px;
+  color: var(--muted-foreground);
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  line-height: 1.2;
+}
+/* "Current": a dot, so it reads as a live status, not a monthly figure */
+.occ-grp__note--live { color: var(--warn); font-weight: 600; }
+.occ-grp__note--live::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
 
 /* zero counts fade back */
 .occ-zero { color: color-mix(in oklab, var(--muted-foreground) 55%, var(--card)) !important; }
@@ -417,8 +508,9 @@
 }
 
 .occ-rate__track {
-  width: 44px;
-  height: 6px;
+  width: 36px;
+  flex: none;
+  height: 5px;
   border-radius: 999px;
   background: var(--muted);
   overflow: hidden;
@@ -432,7 +524,7 @@
 }
 
 .occ-rate__text {
-  min-width: 44px;
+  min-width: 48px;                /* fits "100.0%", so every bar starts at the same point */
   text-align: right;
   font-weight: 600;
   color: var(--rate);
@@ -442,8 +534,8 @@
 .occ-rating {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  font-size: 0.8rem;
+  gap: 6px;
+  font-size: 0.75rem;
   font-weight: 500;
   white-space: nowrap;
 }
@@ -467,7 +559,7 @@
   flex-wrap: wrap;
   gap: 6px 16px;
   margin-left: auto;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   color: var(--muted-foreground);
 }
 
@@ -488,7 +580,7 @@
 .occ-home-table tfoot td {
   position: sticky;
   bottom: 0;
-  padding: 12px 14px;
+  padding: 9px 12px;
   background: var(--sidebar);
   color: var(--sidebar-foreground);
   font-weight: 700;
@@ -502,3 +594,195 @@
 .occ-home-table tfoot [class*="occ-net--"] { color: var(--sidebar-foreground) !important; }
 .occ-home-table tfoot .occ-rate__track { background: color-mix(in oklab, var(--sidebar-foreground) 20%, transparent); }
 .occ-home-table tfoot .occ-rate__text { color: var(--sidebar-foreground); }
+
+/* ---------- financial year matrix (YearMatrix.jsx) ---------- */
+
+/* the Metric dropdown sits in the title row: keep its open list above the legend row */
+.occ-matrix-card .occ-list__head { position: relative; z-index: 6; }
+
+.occ-matrix {
+  table-layout: fixed;
+  min-width: 740px;    /* narrower screens scroll sideways */
+  font-variant-numeric: tabular-nums;
+}
+
+.occ-matrix th,
+.occ-matrix td { text-align: center; }
+
+/* care home names: one line (the full name on hover), and the column stays in view when the table scrolls sideways */
+.occ-matrix .occ-matrix__home {
+  position: sticky;
+  left: 0;
+  width: 200px;
+  overflow: hidden;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  background: var(--card);
+  box-shadow: inset -1px 0 0 var(--border);
+}
+.occ-matrix th.occ-matrix__home { z-index: 2; background: var(--table-header); }
+.occ-matrix tfoot td.occ-matrix__home { z-index: 2; background: var(--sidebar); }
+
+/* each month's value: a tinted chip in the metric's colour */
+.occ-matrix__cell { padding: 4px 3px !important; }
+
+.occ-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 64px;
+  height: 24px;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  background: color-mix(in oklab, var(--rate) 16%, var(--card));
+  color: color-mix(in oklab, var(--rate) 85%, black);
+}
+.occ-chip--good { --rate: var(--good); }
+.occ-chip--warn { --rate: var(--warn); }
+.occ-chip--bad  { --rate: var(--bad); }
+.occ-chip--none { --rate: var(--muted-foreground); }
+.occ-chip--empty { background: color-mix(in oklab, var(--muted) 50%, var(--card)); }   /* a month still to come */
+
+/* this month: its column is lightly highlighted, its heading in the primary colour */
+.occ-matrix th.occ-matrix__now { color: var(--primary); background: color-mix(in oklab, var(--primary) 12%, var(--table-header)); }
+.occ-matrix td.occ-matrix__now { background: color-mix(in oklab, var(--primary) 4%, var(--card)); }
+
+/* the All homes row: kept in view at the bottom while the list scrolls */
+.occ-matrix tfoot td {
+  position: sticky;
+  bottom: 0;
+  padding: 9px 4px;
+  background: var(--sidebar);
+  color: var(--sidebar-foreground);
+  font-weight: 700;
+  border-bottom: 0;
+}
+.occ-matrix tfoot td.occ-matrix__home { padding-left: 12px; }
+
+.occ-card-foot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 1.25rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.72rem;
+  color: var(--muted-foreground);
+}
+.occ-card-foot strong { color: var(--foreground); }
+
+/* ---------- resident movement chart (MovementChart.jsx) ---------- */
+.occ-movement {
+  /* the two series: validated together (lightness, chroma, colour-blind separation, contrast) */
+  --series-in: #008fa8;          /* admissions */
+  --series-out: #c8611f;         /* discharges */
+}
+
+.occ-chart {
+  padding: 10px 1.25rem 6px;
+}
+
+.occ-chart svg { display: block; overflow: visible; }
+
+/* the two charts: the hover tip is placed in the same x/y as their SVGs */
+.occ-chart__plots { position: relative; }
+
+.occ-chart__legend {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 2px;
+  font-size: 0.7rem;
+  color: var(--muted-foreground);
+}
+.occ-chart__legend span,
+.occ-chart__tip span,
+.occ-stat dt { display: inline-flex; align-items: center; gap: 6px; }
+.occ-chart__legend i,
+.occ-chart__tip i,
+.occ-stat i { width: 10px; height: 10px; border-radius: 3px; }
+.occ-chart__key--in  { background: var(--series-in); }
+.occ-chart__key--out { background: var(--series-out); }
+
+.occ-chart__grid { stroke: var(--border); stroke-width: 1; }
+.occ-chart__zero { stroke: var(--muted-foreground); stroke-width: 1; }
+.occ-chart__hover { fill: color-mix(in oklab, var(--primary) 8%, transparent); }
+
+.occ-chart__ylabel,
+.occ-chart__xlabel,
+.occ-chart__value { font-size: 10px; fill: var(--muted-foreground); font-variant-numeric: tabular-nums; }
+.occ-chart__ylabel { text-anchor: end; dominant-baseline: middle; }
+.occ-chart__xlabel { text-anchor: middle; }
+.occ-chart__xlabel--now { fill: var(--primary); font-weight: 700; }
+.occ-chart__value { text-anchor: middle; font-weight: 600; fill: var(--foreground); }
+/* the number over each admissions / discharges bar: small and in text ink, so the bars stay the focus */
+.occ-chart__barvalue { font-size: 9.5px; font-weight: 600; text-anchor: middle; fill: var(--muted-foreground); font-variant-numeric: tabular-nums; }
+
+/* the bars grow from the baseline when the chart first appears, one month after another */
+.occ-chart__bar {
+  transform-box: fill-box;
+  transform-origin: bottom;
+  animation: occ-bar-grow 650ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  animation-delay: calc(var(--i, 0) * 45ms);
+}
+.occ-chart__bar--down { transform-origin: top; }   /* losses grow downwards */
+.occ-chart__barvalue,
+.occ-chart__value { animation: occ-fade-in 400ms ease-out both; animation-delay: calc(var(--i, 0) * 45ms + 350ms); }
+@keyframes occ-bar-grow { from { transform: scaleY(0); } }
+@keyframes occ-fade-in { from { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .occ-chart__bar, .occ-chart__barvalue, .occ-chart__value { animation: none; }
+}
+
+/* hovering a month brings it forward: the other months' bars fade back */
+.occ-chart__bars { transition: opacity 160ms ease; }
+.occ-chart__svg.is-focus .occ-chart__month:not(.is-hovered) .occ-chart__bars { opacity: 0.35; }
+
+/* the months still to come: light diagonal lines and a quiet label */
+.occ-chart__hatch { stroke: var(--border); stroke-width: 1.5; }
+.occ-chart__future text { font-size: 10.5px; font-weight: 600; letter-spacing: 0.04em; text-anchor: middle; fill: var(--muted-foreground); }
+
+/* the financial year so far, at the right of the card's title */
+.occ-stats { display: flex; gap: 8px; margin: 0; }
+.occ-stat {
+  min-width: 104px;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: color-mix(in oklab, var(--muted) 35%, var(--card));
+}
+.occ-stat dt { font-size: 0.66rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted-foreground); }
+.occ-stat dd { margin: 2px 0 0; font-family: var(--font-display); font-size: 1.25rem; font-weight: 700; color: var(--foreground); font-variant-numeric: tabular-nums; }
+.occ-chart__tip-net { padding-top: 4px; border-top: 1px solid var(--border); }
+
+.occ-chart__title {
+  margin: 12px 0 2px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--foreground);
+}
+.occ-chart__title span { margin-left: 6px; font-weight: 500; letter-spacing: 0; text-transform: none; color: var(--muted-foreground); }
+
+.occ-chart__tip {
+  position: absolute;
+  top: 4px;                      /* beside the hovered month, at the top of the chart */
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--card);
+  box-shadow: var(--panel-shadow);
+  font-size: 0.78rem;
+  color: var(--foreground);
+  pointer-events: none;          /* never steals the hover from the bars */
+}
+.occ-chart__tip b { margin-left: auto; padding-left: 12px; font-variant-numeric: tabular-nums; }

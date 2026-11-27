@@ -8,7 +8,7 @@
 //   users = the period's service users (straight from the API): [{ care_home_name, user_id, first_name, ..., file_status, closed_reason }]
 
 import { useMemo, useState } from "react";
-import { ChevronLeft, ChevronRight, Search } from "lucide-react";
+import { ChevronLeft, ChevronRight, CircleCheck, CirclePause, Search } from "lucide-react";
 import Dropdown from "../other/Dropdown";
 import "../../css/FilterBar.css";   // the Dropdown's look (its rules also apply under .dd-host)
 
@@ -131,26 +131,34 @@ export default function ServiceUserTable({ users }) {
       </div>
 
       <div className="occ-table-wrap">
-        <table className="occ-table">
+        <table className="occ-table occ-su-table">
           <thead>
+            {/* Group headings: the file's summary, then the person's current suspension */}
+            <tr className="occ-table__groups">
+              <th colSpan={2} aria-hidden="true"></th>
+              <th colSpan={5} className="occ-group">File</th>
+              <th colSpan={4} className="occ-group occ-group--susp">Suspension (current)</th>
+            </tr>
             <tr>
-              <th>Name</th>
+              <th className="occ-left">Name</th>
+              <th>Home</th>
               <th>Status</th>
-              <th>File opened</th>
-              <th>File closed</th>
+              <th>Opened</th>
+              <th>Closed</th>
               <th>Closed category</th>
               <th>Closed reason</th>
-              <th>Suspended status</th>
-              <th>Suspended date</th>
-              <th>Suspended category</th>
-              <th>Suspended reason</th>
-              <th>Home name</th>
+              <th className="occ-susp--first">Status</th>
+              {/* suspended_date is the last time the suspension changed (started or ended), so it is named that way */}
+              <th>Last changed</th>
+              <th>Category</th>
+              <th>Reason</th>
             </tr>
           </thead>
           <tbody>
             {shown.map(({ user }) => (
               <tr key={user.user_id}>
-                <td className="occ-name">{fullName(user)}</td>
+                <td className="occ-name occ-left">{fullName(user)}</td>
+                <td>{user.care_home_name || "—"}</td>
                 <td>
                   {/* file_status straight from the API: "open" or "closed" */}
                   <span className={`occ-tag occ-tag--${user.file_status === "open" ? "open" : "closed"}`}>
@@ -161,15 +169,14 @@ export default function ServiceUserTable({ users }) {
                 <td>{niceDate(user.file_closed)}</td>
                 <td>{user.closed_category || "—"}</td>
                 <td className="occ-reason" title={user.closed_reason || undefined}>{user.closed_reason || "—"}</td>
-                <td>
+                <td className="occ-susp--first">
                   {user.suspended_status
-                    ? <span className="occ-tag occ-tag--suspended">Yes</span>
-                    : <span className="occ-tag occ-tag--closed">No</span>}
+                    ? <span className="occ-badge occ-badge--suspended"><CirclePause size={13} strokeWidth={2.25} aria-hidden="true" />Suspended</span>
+                    : <span className="occ-badge occ-badge--active"><CircleCheck size={13} strokeWidth={2} aria-hidden="true" />Not suspended</span>}
                 </td>
                 <td>{niceDate(user.suspended_date)}</td>
                 <td>{user.suspended_category || "—"}</td>
                 <td className="occ-reason" title={user.suspended_reason || undefined}>{user.suspended_reason || "—"}</td>
-                <td>{user.care_home_name || "—"}</td>
               </tr>
             ))}
             {shown.length === 0 && (

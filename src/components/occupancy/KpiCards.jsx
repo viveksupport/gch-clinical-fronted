@@ -3,7 +3,7 @@
 // The numbers come from the API's kpi_count (POST /clinical/service_users → services/service_users_service.get_kpi_counts).
 //
 // Props:
-//   kpi      = the API's kpi_count: { cqc_bed_count, occupied_bed_days, occupancy (average beds in use per day),
+//   kpi      = the API's kpi_count: { cqc_bed_count, occupancy (average beds in use per day),
 //              occupancy_rate, new_admission, recent_discharge,
 //              recent_deaths, hospital_admission, suspended_profiles, net_movement }
 //   inPeriod = how many service users are in the list for the period (shown under Occupancy)
@@ -59,15 +59,16 @@ export default function KpiCards({ kpi, inPeriod }) {
 
   // The eight cards, in the order they appear: [label, value, note, icon, colour]
   const cards = [
-    ["CQC beds", niceNumber(kpi.cqc_bed_count), "Registered beds", <BedDouble size={20} />, "blue"],
+    ["CQC beds", niceNumber(kpi.cqc_bed_count), "Registered beds", <BedDouble size={17} />, "blue"],
     ["Avg occupancy", niceAverage(kpi.occupancy),
-      `${bedShare(kpi.occupancy_rate)} · ${niceNumber(inPeriod)} residents in period`, <Users size={20} />, "teal"],
-    ["New admissions", niceNumber(kpi.new_admission), "Files opened in period", <LogIn size={20} />, "green"],
-    ["Recent discharges", niceNumber(kpi.recent_discharge), "Files closed in period", <LogOut size={20} />, "blue"],
-    ["Recent deaths", niceNumber(kpi.recent_deaths), "Closed as deceased", <Activity size={20} />, "grey"],
-    ["Hospital admissions", niceNumber(kpi.hospital_admission), "Suspended for hospital", <Hospital size={20} />, "amber"],
-    ["Suspended profiles", niceNumber(kpi.suspended_profiles), "Suspended in period", <CirclePause size={20} />, "amber"],
-    ["Net movement", signedNumber(kpi.net_movement), "Admissions − discharges", <ArrowLeftRight size={20} />, netColour(kpi.net_movement)],
+      `${bedShare(kpi.occupancy_rate)} · ${niceNumber(inPeriod)} residents in period`, <Users size={17} />, "teal"],
+    ["New admissions", niceNumber(kpi.new_admission), "Files opened in period", <LogIn size={17} />, "green"],
+    ["Recent discharges", niceNumber(kpi.recent_discharge), "Files closed in period", <LogOut size={17} />, "blue"],
+    ["Recent deaths", niceNumber(kpi.recent_deaths), "Closed as deceased", <Activity size={17} />, "grey"],
+    // These two are the status right now (suspended_status today, open files), not counts within the period
+    ["Hospital admissions", niceNumber(kpi.hospital_admission), "Currently suspended · in hospital now", <Hospital size={17} />, "amber"],
+    ["Suspended profiles", niceNumber(kpi.suspended_profiles), "Currently suspended · any reason", <CirclePause size={17} />, "amber"],
+    ["Net movement", signedNumber(kpi.net_movement), "Admissions − discharges", <ArrowLeftRight size={17} />, netColour(kpi.net_movement)],
   ];
 
   return (
